@@ -5,10 +5,11 @@ using UnityEngine;
 public class SeguirPersonaje : MonoBehaviour
 {
     public Transform jugador;
-    public float separacion = 2f;
+    public float distanciaX = 1f;
+    public float distanciaY = 1f;
 
     void Update()
     {
-        transform.position = new Vector3(jugador.position.x + separacion, transform.position.y, transform.position.z);
+        transform.position = new Vector3(jugador.position.x + distanciaX, jugador.position.y + distanciaY, transform.position.z);
     }
 }
