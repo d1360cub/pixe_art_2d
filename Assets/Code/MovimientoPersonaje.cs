@@ -9,10 +9,12 @@ public class MovimientoPersonaje : MonoBehaviour
     private bool enElsuelo = false;
 
     private Rigidbody2D cuerpoRigido;
+    private Animator animaciones;
 
     void Awake()
     {
         cuerpoRigido = GetComponent<Rigidbody2D>();
+        animaciones = GetComponent<Animator>();
     }
 
     void Update()
@@ -25,6 +27,7 @@ public class MovimientoPersonaje : MonoBehaviour
             cuerpoRigido.AddForce(new Vector2(0f, fuerzaSalto), ForceMode2D.Impulse);
             enElsuelo = false;
         }
+        animaciones.SetFloat("HorizontalMovement", Mathf.Abs(movimientoHorizontal));
     }
 
     void OnCollisionEnter2D (Collision2D collision)
