@@ -6,8 +6,9 @@ public class MovimientoPersonaje : MonoBehaviour
 {
     public float velocidadMovimiento = 5f;
     public float fuerzaSalto = 7f;
-    private bool enElsuelo = false;
+    public Transform RestartPoint;
 
+    private bool enElsuelo = false;
     private Rigidbody2D cuerpoRigido;
     private Animator animaciones;
 
@@ -27,12 +28,28 @@ public class MovimientoPersonaje : MonoBehaviour
             cuerpoRigido.AddForce(new Vector2(0f, fuerzaSalto), ForceMode2D.Impulse);
             enElsuelo = false;
         }
+
+        if (movimientoHorizontal > 0)
+            transform.localScale = new Vector3(1, 1, 1);
+        else if (movimientoHorizontal < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+
         animaciones.SetFloat("HorizontalMovement", Mathf.Abs(movimientoHorizontal));
     }
 
     void OnCollisionEnter2D (Collision2D collision)
     {
-        enElsuelo = collision.gameObject.CompareTag("Suelo");  
+        enElsuelo = collision.gameObject.CompareTag("Suelo");
+        if(collision.gameObject.CompareTag("Death"))
+            Restart();
     }
 
+    void Restart()
+    {
+        cuerpoRigido.velocity = Vector2.zero;
+        cuerpoRigido.angularVelocity = 0;
+        cuerpoRigido.bodyType = RigidbodyType2D.Static;
+        transform.position = RestartPoint.position;
+        cuerpoRigido.bodyType = RigidbodyType2D.Dynamic;
+    }
 }
